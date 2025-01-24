@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main_content %}
+<div id="modal-dialog" class="modal-container modal-closed">
+    <div class="dialog-container">
+        <div class="dialog-header">
+            <span style="width: 100%; font-size: 22px;">Complete or Close Order</span>
+            <button id="modal-close" class="dialog-close-button" type="button">X</button>
+        </div>
+
+        <hr>
+
+        <div class="dialog-body">
+            <p>Are you sure you want to complete this order? This action cannot be undone.</p>
+            <p>Please make sure the following is completed prior to completing the order.</p>
+            <ul>
+                <li>Product or service has been purchased</li>
+                <li>Tracking URL is provided (if applicable)</li>
+                <!-- <li>Receipt has been linked or attached</li> -->
+                <li>Place any notes you have below, this will be sent to the user</li>
+            </ul>
+            <p>Note: It may take up to an hour for the order notification to be sent to the user</p>
+            <textarea class="w-100" placeholder="Notes"></textarea>
+        </div>
+
+        <hr>
+
+        <div class="dialog-footer">
+            <button class="btn-std" type="button">Complete Order</button>
+            <button class="btn-std ms-3" type="button">Close Order</button>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <h1>Order #{{ order.id }}</h1>
+
+    <div class="row align-items-center mb-3 g-2">
+        <div class="col-auto">
+            <button id="back-btn" class="btn-std btn-icon" type="button">
+                <svg class="me-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
+                  </svg>
+                Back
+            </button>
+        </div>
+
+        <div class="col-auto">
+            <a class="btn-std btn-icon link-no-style" href="{{ order.hyperlink }}" target="_blank">
+                Open Product Page
+                <svg class="ms-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                </svg>
+            </a>
+        </div>
+
+        {% if order.status == 'open' %}
+        <div class="col-auto">
+            <button id="modal-open" class="btn-std btn-icon" type="button" data-order-id="{{order.id}}">
+                Complete
+                <svg class="ms-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+                  </svg>
+            </button>
+        </div>
+        {% endif %}
+    </div>
+
+    <table class="table table-striped">
+        <tbody>
+            <tr>
+                <td>Status</td>
+                <td>{{order.status}}</td>
+            </tr>
+            <tr>
+                <td>Order ID</td>
+                <td>{{order.id}}</td>
+            </tr>
+            <tr>
+                <td>Submitted On</td>
+                <td>{{order.submission_date}}</td>
+            </tr>
+            <tr>
+                <td>Submitted By</td>
+                <td>{{order.responder}}</td>
+            </tr>
+            <tr>
+                <td>Department</td>
+                <td>{{order.department}}</td>
+            </tr>
+            <tr>
+                <td>Items</td>
+                <td>{{order.items}}</td>
+            </tr>
+            <tr>
+                <td>Variation</td>
+                <td>{{order.variation}}</td>
+            </tr>
+            <tr>
+                <td>Notes</td>
+                <td>{{order.notes}}</td>
+            </tr>
+            <tr>
+                <td>Price</td>
+                <td>${{order.price}}</td>
+            </tr>
+            <tr>
+                <td>Quantity</td>
+                <td>{{order.quantity}}</td>
+            </tr>
+            <tr>
+                <td>Ship To</td>
+                <td>{{order.ship_to}}</td>
+            </tr>
+            <tr>
+                <td>Shipping Address</td>
+                <td>{{order.shipping_address}}</td>
+            </tr>
+            <tr>
+                <td>Link</td>
+                <td>
+                    <a href="{{order.hyperlink}}">{{order.hyperlink}}</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="mb-3">
+        <h4>Shipment Information</h4>
+        <label for="tracking-url-field">Tracking URL</label>
+        <input id="tracking-url-field" class="input-std" type="text" />
+
+        <!-- <h4>Receipt Information</h4>
+        <label for="receipt-field">Order Receipt Link</label>
+        <input id="receipt-field" class="input-std" type="text" /> -->
+    </div>
+
+    <!-- Private notes textarea -->
+     <p>These are your private notes, they are only visible to you</p>
+     <textarea id="private-notes" class="input-text-area" rows="10" placeholder="Notes" data-order-id="{{order.id}}">{{ order.private_notes }}</textarea>
+</div>
+<script defer src="{% static 'dashboard_app/js/order-page.js' %}"></script>
+{% endblock %}
