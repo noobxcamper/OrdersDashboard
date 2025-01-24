@@ -19,5 +19,6 @@ class OrderSerializer(serializers.ModelSerializer):
             'ship_to',
             'shipping_address',
             'hyperlink',
-            'tracking_url'
+            'tracking_url',
+            'private_notes'
         )

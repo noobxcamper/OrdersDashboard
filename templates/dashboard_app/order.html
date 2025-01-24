@@ -27,8 +27,10 @@
         <hr>
 
         <div class="dialog-footer">
-            <button class="btn-std" type="button">Complete Order</button>
-            <button class="btn-std ms-3" type="button">Close Order</button>
+            <button id="complete-order-btn" class="btn-std" type="button" data-order-id="{{ order.id }}">Complete
+                Order</button>
+            <button id="close-order-btn" class="btn-std ms-3" type="button" data-order-id="{{ order.id }}">Close
+                Order</button>
         </div>
     </div>
 </div>
@@ -41,7 +43,7 @@
             <button id="back-btn" class="btn-std btn-icon" type="button">
                 <svg class="me-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-                  </svg>
+                </svg>
                 Back
             </button>
         </div>
@@ -56,16 +58,18 @@
             </a>
         </div>
 
-        {% if order.status == 'open' %}
         <div class="col-auto">
+            {% if order.status == 'open' %}
             <button id="modal-open" class="btn-std btn-icon" type="button" data-order-id="{{order.id}}">
                 Complete
                 <svg class="ms-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
-                  </svg>
+                </svg>
             </button>
+            {% else %}
+            <button id="update-order-btn" class="btn-std" type="button" data-order-id="{{ order.id }}">Update Tracking URL</button>
+            {% endif %}
         </div>
-        {% endif %}
     </div>
 
     <table class="table table-striped">
@@ -128,9 +132,18 @@
     </table>
 
     <div class="mb-3">
-        <h4>Shipment Information</h4>
+        <div class="d-flex align-items-center">
+            <h4>Shipment Information</h4>
+            <a class="btn-std btn-icon link-no-style ms-3" href="{{ order.tracking_url }}" target="_blank">
+                Open Tracking URL
+                <svg class="ms-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                </svg>
+            </a>
+        </div>
         <label for="tracking-url-field">Tracking URL</label>
-        <input id="tracking-url-field" class="input-std" type="text" />
+        <input id="tracking-url-field" class="input-std" type="text" value="{{ order.tracking_url }}" />
 
         <!-- <h4>Receipt Information</h4>
         <label for="receipt-field">Order Receipt Link</label>
@@ -138,8 +151,13 @@
     </div>
 
     <!-- Private notes textarea -->
-     <p>These are your private notes, they are only visible to you</p>
-     <textarea id="private-notes" class="input-text-area" rows="10" placeholder="Notes" data-order-id="{{order.id}}">{{ order.private_notes }}</textarea>
+    <div class="d-flex align-items-center mb-2">
+        <p class="m-0 p-0">These are your private notes, they are only visible to you</p>
+        <button id="save-notes-btn" class="btn-std ms-3" type="button" data-order-id="{{ order.id }}">Save
+            Notes</button>
+    </div>
+    <textarea id="private-notes" class="input-text-area" rows="10" placeholder="Notes"
+        data-order-id="{{order.id}}">{{ order.private_notes }}</textarea>
 </div>
-<script defer src="{% static 'dashboard_app/js/order-page.js' %}"></script>
+<script defer src="{% static 'dashboard_app/js/order.js' %}"></script>
 {% endblock %}
