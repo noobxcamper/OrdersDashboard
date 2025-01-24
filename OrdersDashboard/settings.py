@@ -25,9 +25,6 @@ load_dotenv(find_dotenv())
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-78jdmbhqcwz)w-3vvx=xz-1bj0*=)1+)ha&bk7!g4fhdrap3x8'
-
 # Config keys
 SECRET_KEY = environ['SECRET_KEY']
 TENANT_ID = environ['TENANT_ID']
